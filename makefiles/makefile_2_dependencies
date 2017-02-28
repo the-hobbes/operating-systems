@@ -1,0 +1,26 @@
+# Sometimes is useful to use different targets. This is because if you modify a
+# single file in your project, you don’t have to recompile everything, only what
+# you modified.
+
+# target 'all' has only dependencies now. For make to execute, it has to meet
+# all dependencies of the called target. Each of the dependencies are searched
+# and all available targets executed.
+
+all: hello
+
+hello: main.o factorial.o hello.o
+	g++ main.o factorial.o hello.o -o hello
+
+main.o: main.cpp
+	g++ -c main.cpp
+
+factorial.o: factorial.cpp
+	g++ -c factorial.cpp
+
+hello.o: hello.cpp
+	g++ -c hello.cpp
+
+# this target gets rid of all the object files and executables.
+# run with: make -f makefile_2_dependencies clean
+clean:
+	rm *o hello

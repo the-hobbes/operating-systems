@@ -1,0 +1,6 @@
+# run this with: $ make -f makefile_1
+# 'all' is the default target for makefiles, which make will execute if no other
+#  target is specified. Make compiles the program according to the command line
+#  we give it (-o means output the binary, and call it hello).
+all:
+	g++ main.cpp hello.cpp factorial.cpp -o hello
