@@ -12,3 +12,6 @@ target3:
 
 target4:
 	gcc -pthread -o thread_creation_corrected 4_thread_creation_corrected.c
+
+target5:
+	gcc -pthread -o producer_consumer 1_producer_consumer.c
