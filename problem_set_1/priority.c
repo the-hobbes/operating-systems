@@ -62,29 +62,39 @@ void *writer (void *param) {
   // remember that writers can only write when there are no readers
   ++NUM_WRITERS;
   // wait a random amount of time
-  int r = rand() % 6;
+  int r = rand() % 30;
   // ssssleep
-  fprintf(stdout, "Sleep for %d seconds\n", r);
+  fprintf(stdout, "Writer thread sleeping for %d seconds\n", r);
   sleep(r);
   // grab the lock
   pthread_mutex_lock(&m);
   // are there any readers reading from the shared variable? 
   if (reader_has_priority == 1) {
-    fprintf(stdout, "Reader must have priority");
+    //fprintf(stdout, "Reader must have priority\n");
     pthread_cond_wait(&write_ok, &m);
   }
-  // write and print the value
+  // write and print the value and number of reader threads present
   SHARED_VARIABLE = r;
-  printf("Variable value is: %d\n", r);
+  printf(
+    "Write: Variable value is: %d, and the number of readers present when writing is: %d (should be 0)\n", r, NUM_READERS);
   pthread_mutex_unlock(&m);
   --NUM_WRITERS;
-  // print the number of readers present when writing (should be 0)
-  printf("Number of readers is: %d\n", NUM_READERS);
   return 0;
 }
 
 void *reader (void *param) {
+  int r = rand() % 30;
+  fprintf(stdout, "Reader thread sleeping for %d seconds\n", r);
+  sleep(r);
+  pthread_mutex_lock(&m);
   ++NUM_READERS;
+  reader_has_priority = 1;
+  // read and print the value
+  printf("Read: The value read is %d, and the number of readers is %d\n",
+         SHARED_VARIABLE, NUM_READERS);
   --NUM_READERS;
+  reader_has_priority = 0;
+  pthread_mutex_unlock(&m);
+  pthread_cond_signal(&write_ok);
   return 0;
 }
