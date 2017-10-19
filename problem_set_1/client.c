@@ -14,7 +14,7 @@ char *SERVER_PORT;
 
 void error(char *msg) {
     perror(msg);
-    exit(0);
+    exit(1);
 }
 
 int main(int argc, char** argv) {
@@ -48,4 +48,5 @@ int main(int argc, char** argv) {
         (struct sockaddr *)&server_address, sizeof(server_address)) < 0) {
     error("ERROR connecting");
   }
+  return 0;
 }
