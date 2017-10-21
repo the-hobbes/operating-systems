@@ -80,7 +80,7 @@ int main(int argc, char *argv[]) {
     output[i] = toupper(buffer[i]);
     i++;
   }
-  printf("%s", output);
+  printf("%s\n", output);
  return 0; 
 }
 
